@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service CommandExecutor {
+  rpc ExecuteCommand (CommandRequest) returns (CommandResponse);
+  rpc KillProcess (CommandRequest) returns (CommandResponse);
+}
+
+message CommandRequest {
+  string command = 1;  // Command to execute or PID for KillProcess
+}
+
+message CommandResponse {
+  string status = 1;   // Response status
+  string output = 2;   // Output of the executed command or result
+}
