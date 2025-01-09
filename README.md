@@ -7,7 +7,7 @@ source env/bin/activate
 pip install -r requirements.txt
 
 pip install grpcio grpcio-tools
-python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. command.proto
+python -m grpc_tools.protoc -I. --python_out=./src/utils --grpc_python_out=./src/utils command.proto
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 
