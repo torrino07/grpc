@@ -2,3 +2,4 @@ artifacts
 env
 Feeds
 configs.yaml
+__pycache__

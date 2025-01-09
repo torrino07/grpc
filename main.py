@@ -19,7 +19,7 @@ def send_command(command: str, rpc_method: str):
 
 @app.post("/start")
 async def start_feeds():
-    response = send_command("artifacts/configs.yaml", "start")
+    response = send_command(f"./Feeds configs.yaml", "start")
     return {"status": response["status"], "pid": response["output"]}
 
 @app.delete("/stop/{pid}")

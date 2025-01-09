@@ -10,20 +10,20 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
     def ExecuteCommand(self, request, context):
         try:
             process = subprocess.Popen(
-                ["artifacts/Feeds", request.command],
-                text=True,
+                [request.command],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                close_fds=True,
-                preexec_fn=os.setpgrp
+                stdin=subprocess.PIPE,
+                start_new_session=True,
+                shell=True
             )
             return command_pb2.CommandResponse(
-                status="Success",
+                status="running",
                 output=f"{process.pid}"
             )
         except Exception as e:
             return command_pb2.CommandResponse(
-                status="Error",
+                status="error",
                 output=str(e),
             )
 
@@ -32,17 +32,17 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
             pid = int(request.command)
             os.kill(pid, signal.SIGTERM)
             return command_pb2.CommandResponse(
-                status="Success",
+                status="terminated",
                 output=f"Process with PID {pid} has been terminated"
             )
         except ProcessLookupError:
             return command_pb2.CommandResponse(
-                status="Error",
+                status="error",
                 output=f"Process with PID {pid} does not exist"
             )
         except Exception as e:
             return command_pb2.CommandResponse(
-                status="Error",
+                status="error",
                 output=str(e),
             )
 
