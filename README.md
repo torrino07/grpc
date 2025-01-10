@@ -11,6 +11,12 @@ python -m grpc_tools.protoc -I. --python_out=./src/utils --grpc_python_out=./src
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 
-curl -X POST http://127.0.0.1:8000/start -H "Content-Type: application/json"
+curl -X POST http://127.0.0.1:8000/api/v1/processes/start -H "Content-Type: application/json"
 
-curl -X DELETE http://127.0.0.1:8000/stop/15492
+curl -X DELETE http://127.0.0.1:8000/api/v1/processes/stop/15492
+
+curl -X POST http://127.0.0.1:8000/api/v1/processes/start \
+     -H "Content-Type: application/json" \
+     -d '{"host":"stream.binance.com", "port": 443, "request": {"method": "SUBSCRIBE","params": ["btcusdt@depth@100ms", "btcusdt@trade"],"id": 1}, "handshake": "/stream?streams=", "topic": "binance.spot.raw", "client": "zeromq", "clientHost": "127.0.0.1", "clientPort": 5556}'
+
+curl -k -X DELETE http://127.0.0.1:8000/api/v1/processes/stop/71999
