@@ -33,6 +33,8 @@ jobs:
       - name: compress grpc
         run: |
           mkdir -p dist
+          mv poetry.lock src/
+          mv pyproject.toml src/
           zip -r ${{ env.ARTIFACT }}.zip ${{ env.ARTIFACT }}
           mv ${{ env.ARTIFACT }}.zip dist/
 
