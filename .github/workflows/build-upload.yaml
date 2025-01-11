@@ -35,7 +35,7 @@ jobs:
           mkdir -p dist
           mv poetry.lock ${{ env.ARTIFACT }}/
           mv pyproject.toml ${{ env.ARTIFACT }}/
-          tar -czvf ${{ env.ARTIFACT }}.tar.gz -C ${{ env.ARTIFACT }}
+          tar -czvf ${{ env.ARTIFACT }}.tar.gz -C dist ${{ env.ARTIFACT }}
           mv ${{ env.ARTIFACT }}.tar.gz dist/
 
       - name: Upload Artifacts
