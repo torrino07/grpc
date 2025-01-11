@@ -20,5 +20,3 @@ curl -X POST http://127.0.0.1:8000/api/v1/processes/start \
      -d '{"host":"stream.binance.com", "port": 443, "request": {"method": "SUBSCRIBE","params": ["btcusdt@depth@100ms", "btcusdt@trade"],"id": 1}, "handshake": "/stream?streams=", "topic": "binance.spot.raw", "client": "zeromq", "clientHost": "127.0.0.1", "clientPort": 5556}'
 
 curl -k -X DELETE http://127.0.0.1:8000/api/v1/processes/stop/76114
-
-lsof -i :5556
