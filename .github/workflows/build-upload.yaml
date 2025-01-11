@@ -140,8 +140,8 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/${{ env.ARTIFACT }}.zip
-          asset_name: ${{ env.ARTIFACT }}.zip
+          asset_path: dist/${{ env.ARTIFACT }}.tar.gz
+          asset_name: ${{ env.ARTIFACT }}.tar.gz
           asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
