@@ -32,12 +32,11 @@ jobs:
 
       - name: compress grpc
         run: |
-          mkdir -p dist/${{ env.ARTIFACT }}
-          mv poetry.lock dist/${{ env.ARTIFACT }}
-          mv pyproject.toml dist/${{ env.ARTIFACT }}
-          mv src/*.py dist/${{ env.ARTIFACT }}
-          tar -czvf ${{ env.ARTIFACT }}.tar.gz -C dist ${{ env.ARTIFACT }}
-        # mv ${{ env.ARTIFACT }}.tar.gz dist/
+          mkdir -p dist
+          mv poetry.lock src
+          mv pyproject.toml src
+          tar -czvf ${{ env.ARTIFACT }}.tar.gz -C src .
+          mv ${{ env.ARTIFACT }}.tar.gz dist/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
