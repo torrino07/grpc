@@ -35,6 +35,8 @@ jobs:
           mkdir -p dist
           mv poetry.lock ${{ env.ARTIFACT }}/
           mv pyproject.toml ${{ env.ARTIFACT }}/
+          mv command_pb2_grpc.py ${{ env.ARTIFACT }}/
+          mv command_pb2.py ${{ env.ARTIFACT }}/
           cp ${{ env.ARTIFACT }}/* dist/
           tar -czvf ${{ env.ARTIFACT }}.tar.gz -C dist .
           mv ${{ env.ARTIFACT }}.tar.gz dist/
