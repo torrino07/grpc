@@ -7,5 +7,13 @@ python -m grpc_tools.protoc -I. --python_out=./src --grpc_python_out=./src comma
 poetry lock
 poetry install
 poetry shell
-chomd -777cchmod +x src/server.py
-poetry run python src/server.py
+chmod +x src
+cd src
+poetry run python server.py
+
+# 3. Ec2
+
+pip install protobuf=="4.21.12"
+pip install grpcio-tools=="1.56.2"
+pip install grpcio=="1.56.2"
+python3 server.py

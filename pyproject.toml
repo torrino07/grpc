@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "grpc-server"
 version = "0.6.0"
+package-mode = false
 description = ""
 authors = ["SD Traders <torrino07@gmail.com>"]
 readme = "README.md"
@@ -13,8 +14,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
 protobuf = "4.21.12"
-grpcio-tools = "^1.56.2"
-grpcio = "^1.56.2"
+grpcio-tools = "1.56.2"
+grpcio = "1.56.2"
 
 
 [[tool.poetry.source]]
