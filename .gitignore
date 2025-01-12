@@ -1,4 +1,4 @@
-artifacts
+.venv
 env
 Feeds
 configs.yaml

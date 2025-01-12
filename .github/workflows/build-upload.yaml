@@ -33,10 +33,9 @@ jobs:
       - name: compress grpc
         run: |
           mkdir -p dist
-          mv poetry.lock ${{ env.ARTIFACT }}/
-          mv pyproject.toml ${{ env.ARTIFACT }}/
-          cp ${{ env.ARTIFACT }}/* dist/
-          tar -czvf ${{ env.ARTIFACT }}.tar.gz -C dist .
+          mv poetry.lock src
+          mv pyproject.toml src
+          tar -czvf ${{ env.ARTIFACT }}.tar.gz -C src .
           mv ${{ env.ARTIFACT }}.tar.gz dist/
 
       - name: Upload Artifacts

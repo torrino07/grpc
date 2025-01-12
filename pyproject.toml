@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fastapi-app"
+name = "grpc-server"
 version = "0.6.0"
 description = ""
 authors = ["SD Traders <torrino07@gmail.com>"]
@@ -13,8 +13,9 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
 protobuf = "4.21.12"
-grpcio = "1.56.2"
-grpcio-tools = "1.56.2"
+grpcio-tools = "^1.56.2"
+grpcio = "^1.56.2"
+
 
 [[tool.poetry.source]]
 name = "Artifacts"
