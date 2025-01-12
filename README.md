@@ -7,5 +7,6 @@ python -m grpc_tools.protoc -I. --python_out=./src --grpc_python_out=./src comma
 poetry lock
 poetry install
 poetry shell
-chmod +x src/server.py
-poetry run python src/server.py
+chmod +x src
+cd src
+poetry run python server.py
