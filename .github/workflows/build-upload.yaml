@@ -32,13 +32,10 @@ jobs:
 
       - name: compress grpc
         run: |
-          mkdir -p dist
-          mkdir -p ${{ env.ARTIFACT }}
-          mv poetry.lock ${{ env.ARTIFACT }}/
-          mv pyproject.toml ${{ env.ARTIFACT }}/
-          mv src/command_pb2_grpc.py ${{ env.ARTIFACT }}/
-          mv src/command_pb2.py ${{ env.ARTIFACT }}/
-          cp ${{ env.ARTIFACT }}/* dist/
+          mkdir -p dist/${{ env.ARTIFACT }}
+          mv poetry.lock dist/${{ env.ARTIFACT }}
+          mv pyproject.toml dist/${{ env.ARTIFACT }}
+          mv src/*.py dist/${{ env.ARTIFACT }}
           tar -czvf ${{ env.ARTIFACT }}.tar.gz -C dist .
           mv ${{ env.ARTIFACT }}.tar.gz dist/
 
