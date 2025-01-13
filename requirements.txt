@@ -1,8 +1,0 @@
-fastapi==0.100.0
-uvicorn==0.22.0
-protobuf==4.21.12
-grpcio==1.56.2
-grpcio-tools==1.56.2
-pydantic==1.10.15
-redis
-zmq
