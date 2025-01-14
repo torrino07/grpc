@@ -12,7 +12,6 @@ cd src
 poetry run python server.py
 
 # 3. Ec2
-
 pip install protobuf=="4.21.12"
 pip install grpcio-tools=="1.56.2"
 pip install grpcio=="1.56.2"
