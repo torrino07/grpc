@@ -13,8 +13,8 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
     def ExecuteCommand(self, request, context):
         try:
             logging.info("Received command: %s", request.command)
-            args = request.command.split()
-            print(args)
+            args = request.command
+            print(request.command)
             process = subprocess.Popen(
                 ["./Feeds"] + args,
                 stdout=subprocess.PIPE,

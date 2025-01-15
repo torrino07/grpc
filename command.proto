@@ -6,7 +6,7 @@ service CommandExecutor {
 }
 
 message CommandRequest {
-  string command = 1;  // Command to execute or PID for KillProcess
+  repeated string command = 1;  // List of command arguments to execute or PID for KillProcess
 }
 
 message CommandResponse {
