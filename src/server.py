@@ -13,13 +13,15 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
     def ExecuteCommand(self, request, context):
         try:
             logging.info("Received command: %s", request.command)
+            args = request.command.split()
+            print(args)
             process = subprocess.Popen(
-                ["./Feeds " + request.command],
+                ["./Feeds"] + args,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 start_new_session=True,
-                shell=True
+                shell=False
             )
             logging.info("Started process with PID: %d", process.pid)
             return command_pb2.CommandResponse(
