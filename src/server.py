@@ -5,23 +5,30 @@ import os
 import signal
 import command_pb2
 import command_pb2_grpc
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
     def ExecuteCommand(self, request, context):
         try:
+            logging.info("Received command: %s", request.command)
+            args = list(request.command)
             process = subprocess.Popen(
-                [request.command],
+                ["./Feeds"] + args,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 start_new_session=True,
-                shell=True
+                shell=False
             )
+            logging.info("Started process with PID: %d", process.pid)
             return command_pb2.CommandResponse(
                 status="running",
                 output=f"{process.pid}"
             )
         except Exception as e:
+            logging.error("Error executing command: %s", str(e))
             return command_pb2.CommandResponse(
                 status="error",
                 output=str(e),

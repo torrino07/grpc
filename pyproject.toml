@@ -14,8 +14,8 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
 protobuf = "4.21.12"
-grpcio-tools = "1.56.2"
-grpcio = "1.56.2"
+grpcio-tools = "1.59.0"
+grpcio = "1.59.0"
 
 
 [[tool.poetry.source]]
