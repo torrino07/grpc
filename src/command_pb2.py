@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\"!\n\x0e\x43ommandRequest\x12\x0f\n\x07\x63ommand\x18\x01 \x03(\t\"1\n\x0f\x43ommandResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06output\x18\x02 \x01(\t2x\n\x0f\x43ommandExecutor\x12\x33\n\x0e\x45xecuteCommand\x12\x0f.CommandRequest\x1a\x10.CommandResponse\x12\x30\n\x0bKillProcess\x12\x0f.CommandRequest\x1a\x10.CommandResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\"!\n\x0e\x43ommandRequest\x12\x0f\n\x07\x63ommand\x18\x01 \x01(\t\"1\n\x0f\x43ommandResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06output\x18\x02 \x01(\t2x\n\x0f\x43ommandExecutor\x12\x33\n\x0e\x45xecuteCommand\x12\x0f.CommandRequest\x1a\x10.CommandResponse\x12\x30\n\x0bKillProcess\x12\x0f.CommandRequest\x1a\x10.CommandResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)

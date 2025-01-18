@@ -17,7 +17,6 @@ protobuf = "4.21.12"
 grpcio-tools = "1.59.0"
 grpcio = "1.59.0"
 
-
 [[tool.poetry.source]]
 name = "Artifacts"
 priority = "primary"

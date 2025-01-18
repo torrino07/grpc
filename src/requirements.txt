@@ -1,5 +1,0 @@
-protobuf==4.21.12
-grpcio-tools==1.56.2
-grpcio==1.56.2
-redis
-zmq

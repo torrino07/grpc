@@ -3,3 +3,5 @@ env
 Feeds
 configs.yaml
 __pycache__
+client.py
+models.py
