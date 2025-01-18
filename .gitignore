@@ -5,3 +5,4 @@ configs.yaml
 __pycache__
 client.py
 models.py
+test.py
