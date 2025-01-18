@@ -6,13 +6,18 @@ import signal
 import command_pb2
 import command_pb2_grpc
 import logging
-import json
+import argparse
+
+parser = argparse.ArgumentParser(description="Port Parameter")
+parser.add_argument("--port", help="The first argument")
+args = parser.parse_args()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
     def ExecuteCommand(self, request, context):
         args = request.command
+        print(args)
         try:
             process = subprocess.Popen(
                 ["./Feeds"],
@@ -20,9 +25,10 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
                 stderr=subprocess.PIPE,
                 stdin=subprocess.PIPE,
                 start_new_session=True,
-                shell=False
+                shell=False,
+                encoding="utf-8"
             )
-            process.stdin.write(args.encode('utf-8'))
+            process.stdin.write(args)
             process.stdin.close()
      
             logging.info("Started process with PID: %d", process.pid)
@@ -59,7 +65,7 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     command_pb2_grpc.add_CommandExecutorServicer_to_server(CommandExecutorServicer(), server)
-    server.add_insecure_port("[::]:50052")
+    server.add_insecure_port(f"[::]:{args.port}")
     server.start()
     server.wait_for_termination()
 
