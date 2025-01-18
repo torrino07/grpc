@@ -9,7 +9,7 @@ poetry install
 poetry shell
 chmod +x src
 cd src
-poetry run python server.py
+poetry run python server.py --port 50052
 
 # 3. Ec2
 pip install protobuf=="4.21.12"

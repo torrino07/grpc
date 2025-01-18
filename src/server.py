@@ -7,6 +7,9 @@ import command_pb2
 import command_pb2_grpc
 import logging
 import argparse
+import locale
+
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 parser = argparse.ArgumentParser(description="Port Parameter")
 parser.add_argument("--port", help="The first argument")
