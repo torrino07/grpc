@@ -11,10 +11,6 @@ import locale
 
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-parser = argparse.ArgumentParser(description="Port Parameter")
-parser.add_argument("--port", help="The first argument")
-args = parser.parse_args()
-
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
@@ -68,7 +64,7 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     command_pb2_grpc.add_CommandExecutorServicer_to_server(CommandExecutorServicer(), server)
-    server.add_insecure_port(f"[::]:{args.port}")
+    server.add_insecure_port(f"[::]:50051")
     server.start()
     server.wait_for_termination()
 
