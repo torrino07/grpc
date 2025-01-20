@@ -1,26 +1,20 @@
-# grpc
+# Introduction 
+TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
-# 1. Build
-python -m grpc_tools.protoc -I. --python_out=./ --grpc_python_out=./ command.proto
+# Getting Started
+TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+1.	Installation process
+2.	Software dependencies
+3.	Latest releases
+4.	API references
 
-# 2. Poetry env
-poetry lock
-poetry install
-poetry shell
-chmod +x src
-cd src
-poetry run python server.py --port 50052
+# Build and Test
+TODO: Describe and show how to build your code and run the tests. 
 
-# 3. Ec2
-pip install protobuf=="4.21.12"
-pip install grpcio-tools=="1.59.0"
-pip install grpcio=="1.59.0"
-python3 server.py
+# Contribute
+TODO: Explain how other users and developers can contribute to make your code better. 
 
-uvicorn client:app --host 0.0.0.0 --port 8000 --reload
-
-curl -k -X POST http://0.0.0.0:8000/api/v1/processes/start \
-     -H "Content-Type: application/json" \
-     -d '{"host":"stream.binance.com", "port": 443, "request": {"method": "SUBSCRIBE","params": ["ethusdt@bookTicker", "ethusdt@trade"],"id": 1}, "handshake": "/stream?streams=", "topic": "binance.spot.raw", "client": "redis", "clientHost": "127.0.0.1", "clientPort": 6379}'
-
-ps aux | grep ./Feeds | grep -v grep | awk '{print $2}' | xargs kill -9
+If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:yes
+- [ASP.NET Core](https://github.com/aspnet/Home)
+- [Visual Studio Code](https://github.com/Microsoft/vscode)
+- [Chakra Core](https://github.com/Microsoft/ChakraCore)
