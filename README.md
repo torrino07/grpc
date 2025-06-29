@@ -18,3 +18,24 @@ If you want to learn more about creating good readme files then refer the follow
 - [ASP.NET Core](https://github.com/aspnet/Home)
 - [Visual Studio Code](https://github.com/Microsoft/vscode)
 - [Chakra Core](https://github.com/Microsoft/ChakraCore)
+
+base64 -i config.toml
+base64 -i config.toml -o config
+base64 -d -i config -o config.toml
+
+
+uv lock
+uv venv
+source .venv/bin/activate
+uv run -- uvicorn client:app --reload
+
+## grpc
+uv lock
+uv venv
+source .venv/bin/activate
+uv run python server.py
+
+pgrep -f feeds
+ps -p 35133
+
+poetry run python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. command.proto
