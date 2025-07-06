@@ -5,7 +5,6 @@ import json
 import grpc
 import command_pb2
 import command_pb2_grpc
-import shlex
 
 app = FastAPI()
 
