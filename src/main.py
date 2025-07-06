@@ -69,13 +69,14 @@ def start(executable, instance_name, core, args):
     pid = get_pid(f"{executable}@{instance_name}")
     return pid
 
+
 def stop(pid):
     service_name = get_service_name(pid)
     if service_name:
         subprocess.run(["sudo", "systemctl", "stop", service_name], check=True)
-        print(f"✅ Stopped service: {service_name}")
+        return True, service_name
     else:
-        print("❌ Could not determine service name from PID.")
+        return False, None
 
 class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
     def Start(self, request, context):
@@ -92,15 +93,21 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
     def Stop(self, request, context):
         pid = request.pid
         try:
-            stop(pid)
-            return command_pb2.CommandResponse(
-                status="terminated",
-                output=f"Service for PID {pid} has been stopped"
-            )
-        except subprocess.CalledProcessError:
+            success, service_name = stop(pid)
+            if success:
+                return command_pb2.CommandResponse(
+                    status="terminated",
+                    output=f"Stopped service: {service_name} (PID {pid})"
+                )
+            else:
+                return command_pb2.CommandResponse(
+                    status="error",
+                    output=f"Could not determine service name for PID {pid}"
+                )
+        except subprocess.CalledProcessError as e:
             return command_pb2.CommandResponse(
                 status="error",
-                output=f"Failed to stop service for PID {pid}"
+                output=f"Failed to stop service for PID {pid}: {str(e)}"
             )
         except Exception as e:
             return command_pb2.CommandResponse(

@@ -51,7 +51,6 @@ async def start(request: Request, sockets: Sockets):
     executable = "feeds"
     name = f"{exchange}.{market}.{core}.{target}"
     response = command(method="start", executable=executable, name=name, core=core, command=args)
-    print(args)
     return {"response": response["output"], "status": response["status"]}
 
 
