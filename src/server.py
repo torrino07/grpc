@@ -1,44 +1,62 @@
 from fastapi import Request, FastAPI
 from models import Sockets
+from typing import Optional
 import json
 import grpc
 import command_pb2
 import command_pb2_grpc
+import shlex
 
 app = FastAPI()
 
-def send_command(executable: str, command: str, rpc_method: str):
+def command(
+    method: str,
+    executable: str,
+    name: Optional[str] = None,
+    core: Optional[str] = None,
+    pid: Optional[str] = None,
+    command: Optional[str] = None,
+    ):
     with grpc.insecure_channel("[::]:50052") as channel:
         stub = command_pb2_grpc.CommandExecutorStub(channel)
-        request = command_pb2.CommandRequest(executable=executable, command=command)
-        if rpc_method == "start":
-            response = stub.ExecuteCommand(request)
-        elif rpc_method == "kill":
-            response = stub.KillProcess(request)
+        if method == "start":
+            response = stub.Start(command_pb2.StartRequest(
+                executable=executable,
+                name=name,
+                core=core,
+                command=command
+                ))
+        elif method == "stop":
+            response = stub.Stop(command_pb2.StopRequest(
+                executable=executable,
+                pid=pid
+                ))
         return {"status": response.status, "output": response.output}
     
 @app.post("/api/v1/socket/start")
 async def start(request: Request, sockets: Sockets):
     payload = sockets.dict()
-    payload_request = json.dumps(payload['request'])
+    payload_request = json.dumps(payload['request'], separators=(',', ':'))
+    target = payload['target']
     args = (
-        f"--exchange {payload['exchange']} "
-        f"--market {payload['market']} "
-        f"--type {payload['type']} "
-        f"--core {payload['core']} "
-        f"--target {payload['target']} "
+        f"--target {target} "
         f"--host {payload['host']} "
         f"--port {payload['port']} "
-        f"--request '{payload_request}' "
+        f"--request {payload_request} "
         f"--handshake {payload['handshake']}"
     )
-    response = send_command("feeds", args, "start")
-    pid = response["output"]
-    status = response["status"]
-    return {"pid": pid,"status": status }
+    exchange = payload['exchange']
+    market = payload['market']
+    core = payload['core']
+    executable = "feeds"
+    name = f"{exchange}.{market}.{core}.{target}"
+    response = command(method="start", executable=executable, name=name, core=core, command=args)
+    print(args)
+    return {"response": response["output"], "status": response["status"]}
 
 
 @app.delete("/api/v1/socket/stop/{pid}")
 async def stop_etl(request: Request, pid: str):
-    send_command("./feeds", pid, "kill")
-    return {"response": f"ETL with pid {pid} terminated!"}
+    executable = "feeds"
+    response = command(method="stop", executable=executable, pid=pid)
+    return {"response": response["output"], "status": response["status"]}

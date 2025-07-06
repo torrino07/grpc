@@ -13,17 +13,19 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\"5\n\x0e\x43ommandRequest\x12\x12\n\nexecutable\x18\x01 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x02 \x01(\t\"1\n\x0f\x43ommandResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06output\x18\x02 \x01(\t2x\n\x0f\x43ommandExecutor\x12\x33\n\x0e\x45xecuteCommand\x12\x0f.CommandRequest\x1a\x10.CommandResponse\x12\x30\n\x0bKillProcess\x12\x0f.CommandRequest\x1a\x10.CommandResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\x12\x07\x63ommand\"O\n\x0cStartRequest\x12\x12\n\nexecutable\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ore\x18\x03 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x04 \x01(\t\".\n\x0bStopRequest\x12\x12\n\nexecutable\x18\x01 \x01(\t\x12\x0b\n\x03pid\x18\x02 \x01(\t\"1\n\x0f\x43ommandResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06output\x18\x02 \x01(\t2\x83\x01\n\x0f\x43ommandExecutor\x12\x38\n\x05Start\x12\x15.command.StartRequest\x1a\x18.command.CommandResponse\x12\x36\n\x04Stop\x12\x14.command.StopRequest\x1a\x18.command.CommandResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'command_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_COMMANDREQUEST']._serialized_start=17
-  _globals['_COMMANDREQUEST']._serialized_end=70
-  _globals['_COMMANDRESPONSE']._serialized_start=72
-  _globals['_COMMANDRESPONSE']._serialized_end=121
-  _globals['_COMMANDEXECUTOR']._serialized_start=123
-  _globals['_COMMANDEXECUTOR']._serialized_end=243
+  _globals['_STARTREQUEST']._serialized_start=26
+  _globals['_STARTREQUEST']._serialized_end=105
+  _globals['_STOPREQUEST']._serialized_start=107
+  _globals['_STOPREQUEST']._serialized_end=153
+  _globals['_COMMANDRESPONSE']._serialized_start=155
+  _globals['_COMMANDRESPONSE']._serialized_end=204
+  _globals['_COMMANDEXECUTOR']._serialized_start=207
+  _globals['_COMMANDEXECUTOR']._serialized_end=338
 # @@protoc_insertion_point(module_scope)

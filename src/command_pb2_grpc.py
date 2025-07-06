@@ -14,14 +14,14 @@ class CommandExecutorStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ExecuteCommand = channel.unary_unary(
-                '/CommandExecutor/ExecuteCommand',
-                request_serializer=command__pb2.CommandRequest.SerializeToString,
+        self.Start = channel.unary_unary(
+                '/command.CommandExecutor/Start',
+                request_serializer=command__pb2.StartRequest.SerializeToString,
                 response_deserializer=command__pb2.CommandResponse.FromString,
                 )
-        self.KillProcess = channel.unary_unary(
-                '/CommandExecutor/KillProcess',
-                request_serializer=command__pb2.CommandRequest.SerializeToString,
+        self.Stop = channel.unary_unary(
+                '/command.CommandExecutor/Stop',
+                request_serializer=command__pb2.StopRequest.SerializeToString,
                 response_deserializer=command__pb2.CommandResponse.FromString,
                 )
 
@@ -29,13 +29,13 @@ class CommandExecutorStub(object):
 class CommandExecutorServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def ExecuteCommand(self, request, context):
+    def Start(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def KillProcess(self, request, context):
+    def Stop(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -44,19 +44,19 @@ class CommandExecutorServicer(object):
 
 def add_CommandExecutorServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ExecuteCommand': grpc.unary_unary_rpc_method_handler(
-                    servicer.ExecuteCommand,
-                    request_deserializer=command__pb2.CommandRequest.FromString,
+            'Start': grpc.unary_unary_rpc_method_handler(
+                    servicer.Start,
+                    request_deserializer=command__pb2.StartRequest.FromString,
                     response_serializer=command__pb2.CommandResponse.SerializeToString,
             ),
-            'KillProcess': grpc.unary_unary_rpc_method_handler(
-                    servicer.KillProcess,
-                    request_deserializer=command__pb2.CommandRequest.FromString,
+            'Stop': grpc.unary_unary_rpc_method_handler(
+                    servicer.Stop,
+                    request_deserializer=command__pb2.StopRequest.FromString,
                     response_serializer=command__pb2.CommandResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'CommandExecutor', rpc_method_handlers)
+            'command.CommandExecutor', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -65,7 +65,7 @@ class CommandExecutor(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def ExecuteCommand(request,
+    def Start(request,
             target,
             options=(),
             channel_credentials=None,
@@ -75,14 +75,14 @@ class CommandExecutor(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/CommandExecutor/ExecuteCommand',
-            command__pb2.CommandRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/command.CommandExecutor/Start',
+            command__pb2.StartRequest.SerializeToString,
             command__pb2.CommandResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def KillProcess(request,
+    def Stop(request,
             target,
             options=(),
             channel_credentials=None,
@@ -92,8 +92,8 @@ class CommandExecutor(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/CommandExecutor/KillProcess',
-            command__pb2.CommandRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/command.CommandExecutor/Stop',
+            command__pb2.StopRequest.SerializeToString,
             command__pb2.CommandResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

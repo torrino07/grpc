@@ -1,5 +1,3 @@
-import locale
-import logging
 import subprocess
 import shlex
 
@@ -9,12 +7,20 @@ import command_pb2_grpc
 
 import grpc
 
-locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
+def get_pid(service_name: str) -> str:
+    try:
+        result = subprocess.run(
+            ["systemctl", "show", service_name, "--property=MainPID", "--value"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        pid = result.stdout.strip()
+        return pid if pid != "0" else ""
+    except subprocess.CalledProcessError:
+        return ""
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
-
-def get_service_name_from_pid(pid):
+def get_service_name(pid):
     try:
         with open(f"/proc/{pid}/cgroup", "r") as f:
             for line in f:
@@ -33,19 +39,7 @@ def get_service_name_from_pid(pid):
     return None
 
 
-def extract(args: str, key: str = "target") -> str:
-    parts = args.strip().split("--")
-    values = []
-    for part in parts:
-        if part:
-            items = part.strip().split(maxsplit=1)
-            if len(items) > 1:
-                values.append(items[1])
-            if items[0] == key:
-                break
-    return ".".join(values), values[-2]
-
-def write_env_file(instance_name, args, executable):
+def write_env_file(executable, instance_name, args):
     env_dir = f"/etc/{executable}"
     env_path = f"{env_dir}/{instance_name}.env"
     subprocess.run(["sudo", "mkdir", "-p", env_dir], check=True)
@@ -56,7 +50,7 @@ def write_env_file(instance_name, args, executable):
         check=True
     )
 
-def set_cpu_affinity(instance_name, core, executable):
+def set_cpu_affinity(executable, instance_name, core):
     dropin_dir = f"/etc/systemd/system/{executable}@{instance_name}.service.d"
     subprocess.run(["sudo", "mkdir", "-p", dropin_dir], check=True)
     conf = f"[Service]\nCPUAffinity={core}\n"
@@ -67,17 +61,16 @@ def set_cpu_affinity(instance_name, core, executable):
         check=True
     )
 
-def start(args, executable):
-    instance_name, core = extract(args)
-    write_env_file(instance_name, args, executable)
-    set_cpu_affinity(instance_name, core)
+def start(executable, instance_name, core, args):
+    write_env_file(executable, instance_name, args)
+    set_cpu_affinity(executable, instance_name, core)
     subprocess.run(["sudo", "systemctl", "daemon-reload"])
     subprocess.run(["sudo", "systemctl", "start", f"{executable}@{instance_name}"], check=True)
-    return instance_name
-
+    pid = get_pid(f"{executable}@{instance_name}")
+    return pid
 
 def stop(pid):
-    service_name = get_service_name_from_pid(pid)
+    service_name = get_service_name(pid)
     if service_name:
         subprocess.run(["sudo", "systemctl", "stop", service_name], check=True)
         print(f"✅ Stopped service: {service_name}")
@@ -85,35 +78,35 @@ def stop(pid):
         print("❌ Could not determine service name from PID.")
 
 class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
-    def ExecuteCommand(self, request, context):
-        args = request.command
+    def Start(self, request, context):
         executable = request.executable
+        name = request.name
+        core = request.core
+        args = request.command
         try:
-            print("thjcdkcc")
-            instance_name = start(args, executable)
-            logging.info(f"Started service {executable}@{instance_name}")
-            return command_pb2.CommandResponse(status="running", output=instance_name)
+            pid = start(executable, name, core, args)
+            return command_pb2.CommandResponse(status="running", output=f"Started service {name} with PID {pid}")
         except Exception as e:
-            logging.error("Error executing command: %s", str(e))
             return command_pb2.CommandResponse(status="error", output=str(e))
 
-
-    def KillProcess(self, request, context):
-        instance_name = request.command
-        executable = request.executable
+    def Stop(self, request, context):
+        pid = request.pid
         try:
-            subprocess.run(["sudo", "systemctl", "stop", f"{executable}@{instance_name}"], check=True)
+            stop(pid)
             return command_pb2.CommandResponse(
                 status="terminated",
-                output=f"Service {executable}@{instance_name} has been stopped"
+                output=f"Service for PID {pid} has been stopped"
             )
         except subprocess.CalledProcessError:
             return command_pb2.CommandResponse(
                 status="error",
-                output=f"Failed to stop service {executable}@{instance_name}"
+                output=f"Failed to stop service for PID {pid}"
             )
         except Exception as e:
-            return command_pb2.CommandResponse(status="error", output=str(e))
+            return command_pb2.CommandResponse(
+                status="error",
+                output=str(e)
+            )
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -121,7 +114,6 @@ def serve():
     server.add_insecure_port("[::]:50052")
     server.start()
     server.wait_for_termination()
-
 
 if __name__ == "__main__":
     serve()
