@@ -1,9 +1,9 @@
 #!/bin/bash
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SRC_DIR="${ROOT_DIR}/src"
+SRC_DIR="${ROOT_DIR}"
 
-SERVICES=("grpc" "procstat")
+SERVICES=("grpc")
 
 echo "🚀 Starting all services from $SRC_DIR"
 

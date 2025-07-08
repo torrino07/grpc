@@ -1,12 +1,17 @@
 colima stop
 colima start --arch aarch64 --cpu 6 --memory 8 --mount $PWD:/grpc:w
 colima ssh << 'EOF'
+
 sudo rm -rf /grpc/src/.venv
 curl -Ls https://astral.sh/uv/install.sh | sh
+
 sudo cp feeds@.service /etc/systemd/system/
 sudo cp feeds /opt/hft/bin/feeds
 sudo chmod +x /opt/hft/bin/feeds
-cd /grpc
+
+sudo cp procstat@.service /etc/systemd/system/
+sudo cp procstat /opt/hft/bin/procstat
+sudo chmod +x /opt/hft/bin/procstat
 EOF
 
 

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package command;
+
+service CommandExecutor {
+  rpc Start (StartRequest) returns (CommandResponse);
+  rpc Stop (StopRequest) returns (CommandResponse);
+}
+
+message StartRequest {
+  string executable = 1;
+  string name = 2;
+  string core = 3;
+  string command = 4;
+}
+
+message StopRequest {
+  string executable = 1;
+  string pid = 2;
+}
+
+message CommandResponse {
+  string status = 1;
+  string output = 2;
+}
