@@ -1,7 +1,5 @@
 #!/bin/bash
 
-sudo rm -rf /grpc/src/.venv
-
 uv lock
 uv venv
 source .venv/bin/activate
