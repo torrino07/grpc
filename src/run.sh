@@ -1,4 +1,5 @@
 #!/bin/bash
+export UV_LINK_MODE=copy
 
 uv lock
 uv venv

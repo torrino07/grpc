@@ -45,11 +45,19 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
             )
 
 def serve():
+    try:
+        pid = start("procstat", "default", '0', '--filters feeds --target 5554')
+        print(f"Started procstat@default with PID {pid}")
+    except Exception as e:
+        print(f"Failed to start procstat@default: {e}")
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     command_pb2_grpc.add_CommandExecutorServicer_to_server(CommandExecutorServicer(), server)
     server.add_insecure_port("[::]:50052")
     server.start()
+    print("gRPC server started on port 50052")
     server.wait_for_termination()
+
 
 if __name__ == "__main__":
     serve()

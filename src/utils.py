@@ -1,6 +1,17 @@
 import shlex
 import subprocess
 
+
+def is_service_active(service_name):
+    try:
+        result = subprocess.run(
+            ["systemctl", "is-active", "--quiet", service_name],
+            check=False
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
+
 def get_pid(service_name):
     try:
         result = subprocess.run(
@@ -55,10 +66,16 @@ def set_cpu_affinity(executable, instance_name, core):
     )
 
 def start(executable, instance_name, core, args):
+    service_name = f"{executable}@{instance_name}"
     write_env_file(executable, instance_name, args)
     set_cpu_affinity(executable, instance_name, core)
     subprocess.run(["sudo", "systemctl", "daemon-reload"])
-    subprocess.run(["sudo", "systemctl", "start", f"{executable}@{instance_name}"], check=True)
+
+    if not is_service_active(service_name):
+        subprocess.run(["sudo", "systemctl", "start", service_name], check=True)
+    else:
+        print(f"{service_name} is already running.")
+
     pid = get_pid(f"{executable}@{instance_name}")
     return pid
 

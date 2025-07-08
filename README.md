@@ -73,3 +73,8 @@ systemctl list-units --type=service | grep 'feeds@' | awk '{print $1}' | while r
     pid=$(systemctl show -p MainPID --value "$service")
     echo "$service => PID: $pid"
 done
+
+
+colima stop
+colima start --mount $PWD:/grpc:w
+colima ssh
