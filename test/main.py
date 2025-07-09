@@ -1,15 +1,17 @@
 import zmq
+import json
 
 def run():
     context = zmq.Context()
     socket = context.socket(zmq.SUB)
-    socket.connect("tcp://0.0.0.0:5554")
+    socket.connect("tcp://127.0.0.1:5554")
     socket.setsockopt_string(zmq.SUBSCRIBE, "")
 
     try:
         while True:
             message = socket.recv()
-            print(f"Received: {message}")
+            decoded_message = message.decode('utf-8')
+            print(f"Received: {decoded_message}")
     except KeyboardInterrupt:
         print("Subscriber stopped.")
 
