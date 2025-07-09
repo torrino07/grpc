@@ -3,7 +3,7 @@ from utils import start, stop
 from concurrent import futures
 import command_pb2
 import command_pb2_grpc
-
+import os
 import grpc
 
 
@@ -15,7 +15,7 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
         args = request.command
         try:
             pid = start(executable, name, core, args)
-            return command_pb2.CommandResponse(status="running", output=f"Started service {name} with PID {pid}")
+            return command_pb2.CommandResponse(status="running", output=f"Started service {name} with PID {pid}", pid=int(pid))
         except Exception as e:
             return command_pb2.CommandResponse(status="error", output=str(e))
 
@@ -26,7 +26,7 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
             if success:
                 return command_pb2.CommandResponse(
                     status="terminated",
-                    output=f"Stopped service: {service_name} (PID {pid})"
+                    output=f"Stopped service: {service_name} with PID {pid}"
                 )
             else:
                 return command_pb2.CommandResponse(
@@ -53,7 +53,7 @@ def serve():
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     command_pb2_grpc.add_CommandExecutorServicer_to_server(CommandExecutorServicer(), server)
-    server.add_insecure_port("[::]:50052")
+    server.add_insecure_port(f"{os.getenv('HOST')}:50052")
     server.start()
     print("gRPC server started on port 50052")
     server.wait_for_termination()

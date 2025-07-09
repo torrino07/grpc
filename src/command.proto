@@ -10,16 +10,17 @@ service CommandExecutor {
 message StartRequest {
   string executable = 1;
   string name = 2;
-  string core = 3;
+  int32 core = 3;
   string command = 4;
 }
 
 message StopRequest {
   string executable = 1;
-  string pid = 2;
+  int32 pid = 2;
 }
 
 message CommandResponse {
   string status = 1;
   string output = 2;
+  optional int32 pid = 3;
 }

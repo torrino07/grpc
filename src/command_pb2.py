@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\x12\x07\x63ommand\"O\n\x0cStartRequest\x12\x12\n\nexecutable\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ore\x18\x03 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x04 \x01(\t\".\n\x0bStopRequest\x12\x12\n\nexecutable\x18\x01 \x01(\t\x12\x0b\n\x03pid\x18\x02 \x01(\t\"1\n\x0f\x43ommandResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06output\x18\x02 \x01(\t2\x83\x01\n\x0f\x43ommandExecutor\x12\x38\n\x05Start\x12\x15.command.StartRequest\x1a\x18.command.CommandResponse\x12\x36\n\x04Stop\x12\x14.command.StopRequest\x1a\x18.command.CommandResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rcommand.proto\x12\x07\x63ommand\"O\n\x0cStartRequest\x12\x12\n\nexecutable\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04\x63ore\x18\x03 \x01(\x05\x12\x0f\n\x07\x63ommand\x18\x04 \x01(\t\".\n\x0bStopRequest\x12\x12\n\nexecutable\x18\x01 \x01(\t\x12\x0b\n\x03pid\x18\x02 \x01(\x05\"K\n\x0f\x43ommandResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06output\x18\x02 \x01(\t\x12\x10\n\x03pid\x18\x03 \x01(\x05H\x00\x88\x01\x01\x42\x06\n\x04_pid2\x83\x01\n\x0f\x43ommandExecutor\x12\x38\n\x05Start\x12\x15.command.StartRequest\x1a\x18.command.CommandResponse\x12\x36\n\x04Stop\x12\x14.command.StopRequest\x1a\x18.command.CommandResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,7 +25,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_STOPREQUEST']._serialized_start=107
   _globals['_STOPREQUEST']._serialized_end=153
   _globals['_COMMANDRESPONSE']._serialized_start=155
-  _globals['_COMMANDRESPONSE']._serialized_end=204
-  _globals['_COMMANDEXECUTOR']._serialized_start=207
-  _globals['_COMMANDEXECUTOR']._serialized_end=338
+  _globals['_COMMANDRESPONSE']._serialized_end=230
+  _globals['_COMMANDEXECUTOR']._serialized_start=233
+  _globals['_COMMANDEXECUTOR']._serialized_end=364
 # @@protoc_insertion_point(module_scope)
