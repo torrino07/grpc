@@ -1,5 +1,4 @@
 import zmq
-import json
 
 def run():
     context = zmq.Context()
