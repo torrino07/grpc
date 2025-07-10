@@ -15,7 +15,7 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
         args = request.command
         try:
             pid = start(executable, name, core, args)
-            return command_pb2.CommandResponse(status="running", output=f"Started service {name} with PID {pid}", pid=int(pid))
+            return command_pb2.CommandResponse(status="running", output=f"Started process with PID {pid}", pid=int(pid))
         except Exception as e:
             return command_pb2.CommandResponse(status="error", output=str(e))
 
@@ -26,17 +26,17 @@ class CommandExecutorServicer(command_pb2_grpc.CommandExecutorServicer):
             if success:
                 return command_pb2.CommandResponse(
                     status="terminated",
-                    output=f"Stopped service: {service_name} with PID {pid}"
+                    output=f"Stopped process with PID {pid}"
                 )
             else:
                 return command_pb2.CommandResponse(
                     status="error",
-                    output=f"Could not determine service name for PID {pid}"
+                    output=f"Could not determine process with PID {pid}"
                 )
         except subprocess.CalledProcessError as e:
             return command_pb2.CommandResponse(
                 status="error",
-                output=f"Failed to stop service for PID {pid}: {str(e)}"
+                output=f"Failed to stop process with PID {pid}: {str(e)}"
             )
         except Exception as e:
             return command_pb2.CommandResponse(
